@@ -1,0 +1,10 @@
+web3
+pandas
+python-dotenv
+prophet
+eth_account
+eth_abi
+eth_utils
+dune_client
+plotly
+numpy
