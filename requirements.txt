@@ -8,3 +8,5 @@ eth_utils
 dune_client
 plotly
 numpy
+ipykernel
+ipython
