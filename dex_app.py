@@ -64,9 +64,9 @@ print(f"Connected account: {account.address}")
 
 def get_contract_address(token):
     """Get contract address based on token name."""
-    if token == 'teth':
+    if token == 'TETH':
         return TETH_CONTRACT_ADDRESS
-    elif token == 'tbtc':
+    elif token == 'TBTC':  
         return TBTC_CONTRACT_ADDRESS
     else:
         raise ValueError(f"Unknown token: {token}")
@@ -92,7 +92,9 @@ async def transfer_tokens(token, amount, recipient_address):
     ]
 
     contract = w3.eth.contract(address=Web3.to_checksum_address(contract_address), abi=erc20_abi)
-    nonce = w3.eth.get_transaction_count(account.address, 'pending')  # Handle pending transactions properly
+    nonce = w3.eth.get_transaction_count(ACCOUNT_ADDRESS, 'pending')
+
+    print(f'nonce at dex_app transfer tokens: {nonce}')
 
     # Fetch initial gas price and gas limit estimation
     gas_price = max(w3.eth.gas_price, w3.to_wei('20', 'gwei'))
@@ -123,7 +125,7 @@ async def transfer_tokens(token, amount, recipient_address):
     print(f"Signed transaction hash: {signed_tx.hash.hex()}")
 
     try:
-        tx_hash = w3.eth.send_raw_transaction(signed_tx.raw_transaction)
+        tx_hash = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
         print(f"Transaction sent: {tx_hash.hex()}")
     except Exception as e:
         print(f"Error sending transaction: {e}")
@@ -165,22 +167,24 @@ async def rebalance_fund_account(prices, initial_holdings, new_compositions, rec
     print(f"Prices: {prices}")
     print(f"New compositions: {new_compositions}")
 
-    normalized_prices = {key.upper(): value for key, value in prices.items()}
-    print(f"Normalized prices: {normalized_prices}")
+    # Fix: Directly use `prices[token]`
+    total_value = sum(initial_holdings[token] * prices[token] for token in initial_holdings)
 
-    total_value = sum(
-        initial_holdings[token] * normalized_prices.get(f"{token.upper()}_PRICE", 0)
-        for token in initial_holdings
-    )
     print(f"Total portfolio value: {total_value}")
 
+    # Fix: Calculate target balances correctly
     target_balances = {
-        token: (total_value * new_compositions.get(token, 0)) / normalized_prices.get(f"{token.upper()}_PRICE", 1)
-        for token in initial_holdings
+        token: (total_value * new_compositions[token]) / prices[token]
+        for token in new_compositions
     }
+    
     print(f"Target balances: {target_balances}")
 
-    differences = {token: target_balances[token] - initial_holdings[token] for token in initial_holdings}
+    # Calculate differences
+    differences = {
+        token: target_balances[token] - initial_holdings.get(token, 0) 
+        for token in target_balances
+    }
     print(f"Differences: {differences}")
 
     for token, difference in differences.items():

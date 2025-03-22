@@ -1,0 +1,7 @@
+curl -X GET http://127.0.0.1:5089/bot1/status
+curl -X GET http://127.0.0.1:5089/bot2/status
+curl -X POST http://127.0.0.1:5089/rebalance/all
+curl -X POST http://127.0.0.1:5089/bot1/rebalance
+curl -X POST http://127.0.0.1:5089/bot2/rebalance
+
+curl -X POST http://127.0.0.1:5089/rebalance/all
