@@ -259,7 +259,7 @@ async def transfer_tokens(w3_instance, private_key, token, amount, recipient_add
 
     # ✅ Send transaction
     try:
-        tx_hash = w3_instance.eth.send_raw_transaction(signed_tx.raw_transaction)
+        tx_hash = w3_instance.eth.send_raw_transaction(signed_tx.rawTransaction)
         print(f"Transaction sent: {tx_hash.hex()}")
         return tx_hash.hex()
     except Exception as e:
@@ -376,6 +376,7 @@ async def main(w3,PRIVATE_KEY):
     ACCOUNT = Account.from_key(PRIVATE_KEY)
 
     w3.eth.default_account = ACCOUNT.address
+    w3.middleware_onion.inject(geth_poa_middleware, layer=0)
 
     # %%
     print(f"✅ Web3 Connection Check: {w3.is_connected()}")

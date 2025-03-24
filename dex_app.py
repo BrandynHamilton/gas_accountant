@@ -125,7 +125,7 @@ async def transfer_tokens(token, amount, recipient_address):
     print(f"Signed transaction hash: {signed_tx.hash.hex()}")
 
     try:
-        tx_hash = w3.eth.send_raw_transaction(signed_tx.raw_transaction)
+        tx_hash = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
         print(f"Transaction sent: {tx_hash.hex()}")
     except Exception as e:
         print(f"Error sending transaction: {e}")

@@ -14,5 +14,3 @@ flask
 diskcache
 scikit-learn
 nbformat
-APScheduler
-flask[async]
