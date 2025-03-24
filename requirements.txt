@@ -11,3 +11,6 @@ numpy
 ipykernel
 ipython
 flask
+diskcache
+scikit-learn
+nbformat

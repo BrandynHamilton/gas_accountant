@@ -9,14 +9,13 @@ import datetime as dt
 from datetime import timedelta
 from prophet import Prophet
 from eth_account import Account
-from web3.middleware import geth_poa_middleware
 from eth_abi import decode
 from eth_utils import decode_hex, to_text
 from flask import Flask, request, jsonify
 from apscheduler.schedulers.background import BackgroundScheduler
 from eth_account import Account
 
-import requests
+import requests 
 import random
 import json
 
@@ -518,13 +517,13 @@ BOT_2_KEY = os.getenv("BOT_2_KEY")
 W3_BOT1 = Web3(Web3.HTTPProvider(SEPOLIA_GATEWAY))
 ACCOUNT_BOT_1 = Account.from_key(BOT_1_KEY)
 W3_BOT1.eth.default_account = ACCOUNT_BOT_1.address
-W3_BOT1.middleware_onion.inject(geth_poa_middleware, layer=0)
+# W3_BOT1.middleware_onion.inject(geth_poa_middleware, layer=0)
 
 # Connect Bot 2
 W3_BOT2 = Web3(Web3.HTTPProvider(SEPOLIA_GATEWAY))
 ACCOUNT_BOT_2 = Account.from_key(BOT_2_KEY)
 W3_BOT2.eth.default_account = ACCOUNT_BOT_2.address
-W3_BOT2.middleware_onion.inject(geth_poa_middleware, layer=0)
+# W3_BOT2.middleware_onion.inject(geth_poa_middleware, layer=0)
 
 # Token Contracts
 TBTC_CONTRACT_ADDRESS = os.getenv("TEST_BTC")
