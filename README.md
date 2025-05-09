@@ -1,4 +1,4 @@
-# Gas Accounting Manager
+# Gas Accounting Manager 🧮
 
 ## Overview
 
